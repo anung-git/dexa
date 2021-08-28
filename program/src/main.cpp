@@ -2,17 +2,12 @@
 #include "Button.h"
 #include "CountDown.h"
 #include "Display.h"
-// #include "Encoder.h"
-
 #include "TimerOne.h"
+// #include "Encoder.h"
 
 //https://l.facebook.com/l.php?u=https%3A%2F%2Fdbuezas.github.io%2Farduino-web-timers%2F%3Ffbclid%3DIwAR0nvm_teQS8hrZm7RUJoPLxb1kUKauIEoZFqoQr3dszwNydVLWvEZobZ2Y%23mcu%3DATMEGA328P%26timer%3D0&h=AT04QPLwQphbuBrsb5QWbaD5sJQGw3AUMt_1wcrC-ymblfux42M-MMgCVCiwPnIsjoUrLjVvmfKIAkNg8SGZWIqZk2X1Wk6MFFNv4uGZLr8UA0a_4ni0l5ynjmschA
 
 // konstan variabel io
-// const int LedStrt = 3;
-// const int LedStop = 3;
-// const int LedReset = 3;
-// const int LedAuto = 3;
 const int relay = 4;
 const int clk = 3;
 const int dat = 2;
@@ -35,15 +30,12 @@ void incriment()
 void rpm()
 {
   displyRPM = counterRPM * 60;
+  display.setRPM(displyRPM);
   counterRPM = 0;
 }
 
 void setup()
 {
-  // pinMode(LedStrt, OUTPUT);
-  // pinMode(LedStop, OUTPUT);
-  // pinMode(LedReset, OUTPUT);
-  // pinMode(LedAuto, OUTPUT);
   pinMode(relay, OUTPUT);
 
   //debug
@@ -65,28 +57,16 @@ void setup()
 unsigned long rate;
 void loop()
 {
-  //Auto Mode
-  // if (mode.getValue() == LOW)
-  // {
-  //   digitalWrite(LedAuto, LOW);
 
-  //   if (reset.getValue() == LOW)
-  //   {
-  //     digitalWrite(LedReset, LOW);
-  //   }
   if (start.getValue() == LOW)
   {
     myCounter.startCount();
-    // digitalWrite(LedStrt, LOW);
-    // digitalWrite(LedStop, HIGH);
     // mode.disable();
     // digitalWrite(relay, HIGH);
   }
   if (stop.getValue() == LOW)
   {
     myCounter.stopCount();
-    // digitalWrite(LedStrt, HIGH);
-    // digitalWrite(LedStop, LOW);
     // digitalWrite(relay, LOW);
     // mode.enable();
   }
@@ -98,26 +78,6 @@ void loop()
     mode.enable();
   }
 
-  // }
-  // //Manual Mode
-  // else
-  // {
-  //   digitalWrite(LedAuto, HIGH);
-  //   if (start.getValue() == LOW)
-  //   {
-  //     digitalWrite(LedStrt, LOW);
-  //     digitalWrite(LedStop, HIGH);
-  //     mode.disable();
-  //     digitalWrite(relay, HIGH);
-  //   }
-  //   if (stop.getValue() == LOW)
-  //   {
-  //     digitalWrite(LedStrt, HIGH);
-  //     digitalWrite(LedStop, LOW);
-  //     digitalWrite(relay, LOW);
-  //     mode.enable();
-  //   }
-  // }
   if (myCounter.isRun())
   {
     digitalWrite(relay, LOW);
@@ -146,7 +106,6 @@ void loop()
   rate = millis();
   myCounter.loop();
   display.loop();
-  // delay(100);
 }
 
 /************************************************************* 

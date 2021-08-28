@@ -23,8 +23,10 @@ private:
     /* data */
     bool lamp;
     uint8_t scan;
-    int count;
+    uint8_t buf[8];
+    // int count;
     void segOut(uint8_t s);
+
 
 public:
     void setRPM(int rpm);

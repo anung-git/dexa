@@ -13,9 +13,23 @@ Display::~Display()
 
 void Display::setCounter(unsigned char min, unsigned char sec)
 {
-    count = (min * 100) + sec;
+    int count = (min * 100) + sec;
+    uint8_t lookupData[] = {129, 187, 73, 25, 51, 21, 5, 185, 1, 17};
+    buf[0] = lookupData[count / 1000];
+    buf[1] = lookupData[(count % 1000) / 100];
+    buf[2] = lookupData[(count % 100) / 10];
+    buf[3] = lookupData[count % 10];
 }
 
+void Display::setRPM(int rpm)
+{
+    uint8_t data1[] = {3, 219, 133, 145, 89, 49, 33, 155, 1, 17};
+    uint8_t data2[] = {33, 237, 81, 69, 141, 7, 3, 109, 1, 5};
+    buf[4] = data1[rpm / 1000];
+    buf[5] = data2[(rpm % 1000) / 100];
+    buf[6] = data1[(rpm % 100) / 10];
+    buf[7] = data2[rpm % 10];
+}
 void Display::segOut(uint8_t s)
 {
     if (lamp)
@@ -33,31 +47,35 @@ void Display::blink(bool val)
 }
 void Display::loop()
 {
-    uint8_t lookupData[] = {129, 187, 73, 25, 51, 21, 5, 185, 1, 17};
-    uint8_t a = count / 1000;
-    uint8_t b = (count % 1000) / 100;
-    uint8_t c = (count % 100) / 10;
-    uint8_t d = count % 10;
+    // uint8_t lookupData[] = {129, 187, 73, 25, 51, 21, 5, 185, 1, 17};
+    // uint8_t a = count / 1000;
+    // uint8_t b = (count % 1000) / 100;
+    // uint8_t c = (count % 100) / 10;
+    // uint8_t d = count % 10;
     switch (scan)
     {
     case 0:
         clrPin(com4);
-        segOut(lookupData[a]);
+        segOut(buf[0]);
+        segOut(buf[4]);
         setPin(com1);
         break;
     case 1:
         clrPin(com1);
-        segOut(lookupData[b]);
+        segOut(buf[1]);
+        segOut(buf[5]);
         setPin(com2);
         break;
     case 2:
         clrPin(com2);
-        segOut(lookupData[c]);
+        segOut(buf[2]);
+        segOut(buf[6]);
         setPin(com3);
         break;
     case 3:
         clrPin(com3);
-        segOut(lookupData[d]);
+        segOut(buf[3]);
+        segOut(buf[7]);
         setPin(com4);
         break;
     }
