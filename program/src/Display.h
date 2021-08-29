@@ -12,10 +12,14 @@
 #define clrPinB(b) PORTB &= ~(1 << (b))
 //#define setPinABC(b) ( ((b)>13) ?   PORTC |=(1<<(b-13))  : ( (b)<8 ? PORTD |=(1<<(b)) : PORTB |=(1<<(b-8)) )  )
 
-#define com1 12
-#define com2 11
-#define com3 10
-#define com4 9
+#define com1 11
+#define com2 10
+#define com3 9
+#define com4 8
+
+#define dataReg A0
+#define stbReg 13
+#define clkReg 12
 
 class Display
 {

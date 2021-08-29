@@ -26,17 +26,13 @@ unsigned long CountDown::secondToMillis(int second)
 {
     return (second * 1000L);
 }
-bool CountDown::countFinish()
-{
-    return this->finish;
-}
+
 void CountDown::loop()
 {
     unsigned long mymillis = millis();
     if (mymillis >= millisCounter)
     {
         start = false;
-        finish = true;
     }
     if (start == true)
     {
@@ -48,6 +44,11 @@ void CountDown::loop()
     }
 }
 
+void CountDown::resetCount(unsigned char min, unsigned char sec)
+{
+    start = false;
+    this->setCount(min,sec);
+}
 void CountDown::startCount()
 {
     if (start == false)
@@ -57,7 +58,6 @@ void CountDown::startCount()
             startMillis = millis();
             millisCounter = startMillis + secondToMillis((min * 60) + sec);
             start = true;
-            finish = false;
         }
     }
 }

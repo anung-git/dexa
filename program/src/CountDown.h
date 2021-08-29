@@ -9,7 +9,6 @@ private:
     unsigned long startMillis, millisCounter;
     unsigned char min, sec;
     bool start,half;
-    bool finish = false;
     int millisToSecond(unsigned long milis);
     unsigned long secondToMillis(int second);
 
@@ -19,8 +18,7 @@ public:
     unsigned char getSecond();
     void startCount();
     void stopCount();
-    void resetCount();
-    bool countFinish();
+    void resetCount(unsigned char min, unsigned char sec);
     bool halfSec();
     void setCount(unsigned char min, unsigned char sec);
     void loop();
