@@ -41,6 +41,7 @@ bool Button::getValue()
 {
     if (mode == FALLING)
     {
+
         bool ret = value;
         value = HIGH;
         return ret;
