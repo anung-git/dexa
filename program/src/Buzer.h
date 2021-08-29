@@ -1,3 +1,5 @@
+#if !defined(Buzer_h)
+#define Buzer_h
 #include <Arduino.h>
 
 class Buzer
@@ -12,3 +14,5 @@ public:
     void loop();
     ~Buzer();
 };
+
+#endif // Buzer_h

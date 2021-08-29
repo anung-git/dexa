@@ -1,3 +1,5 @@
+#if !defined(CircularEprom_h)
+#define CircularEprom_h
 #include <EEPROM.h>
 
 class CircularEprom
@@ -13,3 +15,4 @@ public:
     uint8_t read();
     void write(uint8_t value);
 };
+#endif // CircularEprom_h

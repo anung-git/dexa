@@ -31,17 +31,19 @@ void Button::loop()
 void Button::disable()
 {
     btnEnable = false;
+    pinMode(pin, OUTPUT);
+    digitalWrite(pin, LOW);
 }
 void Button::enable()
 {
     btnEnable = true;
+    pinMode(pin, INPUT_PULLUP);
 }
 
 bool Button::getValue()
 {
     if (mode == FALLING)
     {
-
         bool ret = value;
         value = HIGH;
         return ret;

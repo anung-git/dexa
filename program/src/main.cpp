@@ -12,7 +12,7 @@ const int dat = 2;
 
 // interup variabel
 volatile int counterRPM, displyRPM;
-
+uint8_t settingEnable;
 // Create Object from class
 Buzer buzer = Buzer(6);
 Button stop = Button(A4);
@@ -57,17 +57,25 @@ void loop()
 {
   if (reset.getValue() == LOW)
   {
+    start.enable();
+    stop.disable();
     buzer.on(100);
     myCounter.resetCount(setting.getValue(), 00);
+    settingEnable = true;
   }
 
   if (start.getValue() == LOW)
   {
+    start.disable();
+    stop.enable();
+    settingEnable = false;
     buzer.on(100);
     myCounter.startCount();
   }
   if (stop.getValue() == LOW)
   {
+    stop.disable();
+    start.enable();
     buzer.on(100);
     myCounter.stopCount();
     digitalWrite(relay, LOW);
@@ -83,17 +91,20 @@ void loop()
     display.blink(true);
     digitalWrite(relay, LOW);
 
-    if (up.getValue() == LOW)
+    if (settingEnable == true)
     {
-      buzer.on(100);
-      setting.increment();
-      myCounter.setCount(setting.getValue(), 0);
-    }
-    if (down.getValue() == LOW)
-    {
-      buzer.on(100);
-      setting.decrement();
-      myCounter.setCount(setting.getValue(), 0);
+      if (up.getValue() == LOW)
+      {
+        buzer.on(100);
+        setting.increment();
+        myCounter.setCount(setting.getValue(), 0);
+      }
+      if (down.getValue() == LOW)
+      {
+        buzer.on(100);
+        setting.decrement();
+        myCounter.setCount(setting.getValue(), 0);
+      }
     }
   }
 

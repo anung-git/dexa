@@ -1,3 +1,6 @@
+#if !defined(Setting_h)
+#define Setting_h
+
 #include "CircularEprom.h"
 class Setting
 {
@@ -13,3 +16,5 @@ public:
     Setting(int min, int max);
     ~Setting();
 };
+
+#endif // Setting_h
