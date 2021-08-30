@@ -27,27 +27,40 @@ unsigned long CountDown::secondToMillis(int second)
     return (second * 1000L);
 }
 
+bool CountDown::isFinish()
+{
+    if (finish == true)
+    {
+        finish = false;
+        return true;
+    }
+    return finish;
+}
 void CountDown::loop()
 {
     unsigned long mymillis = millis();
-    if (mymillis >= millisCounter)
-    {
-        start = false;
-    }
     if (start == true)
     {
-        unsigned long bufer = millisCounter - mymillis;
-        int detik = millisToSecond(bufer);
-        min = detik / 60;
-        sec = detik % 60;
-        (mymillis % 1000) > 500 ? half = true : half = false;
+        if (mymillis >= millisCounter)
+        {
+            finish = true;
+            start = false;
+        }
+        else
+        {
+            unsigned long bufer = millisCounter - mymillis;
+            int detik = millisToSecond(bufer);
+            min = detik / 60;
+            sec = detik % 60;
+            (mymillis % 1000) > 500 ? half = true : half = false;
+        }
     }
 }
 
 void CountDown::resetCount(unsigned char min, unsigned char sec)
 {
     start = false;
-    this->setCount(min,sec);
+    this->setCount(min, sec);
 }
 void CountDown::startCount()
 {
@@ -58,6 +71,7 @@ void CountDown::startCount()
             startMillis = millis();
             millisCounter = startMillis + secondToMillis((min * 60) + sec);
             start = true;
+            finish = false;
         }
     }
 }

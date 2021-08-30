@@ -8,7 +8,7 @@ private:
     /* data */
     unsigned long startMillis, millisCounter;
     unsigned char min, sec;
-    bool start,half;
+    bool start, half, finish;
     int millisToSecond(unsigned long milis);
     unsigned long secondToMillis(int second);
 
@@ -21,6 +21,7 @@ public:
     void resetCount(unsigned char min, unsigned char sec);
     bool halfSec();
     void setCount(unsigned char min, unsigned char sec);
+    bool isFinish();
     void loop();
     bool isRun();
     ~CountDown();

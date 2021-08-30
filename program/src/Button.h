@@ -6,9 +6,8 @@ class Button
 {
 private:
     int pin;
-    bool value;
+    bool value=HIGH;
     bool btnEnable = true;
-    int mode;
     int wait;
     unsigned long debounce;
 
@@ -19,7 +18,6 @@ public:
     void enable();
     void reset();
     void loop();
-    void changeMode(int mode);
     bool getValue();
 };
 

@@ -5,6 +5,8 @@
 #include "TimerOne.h"
 #include "Setting.h"
 #include "Buzer.h"
+#include "Delay.h"
+
 // konstan variabel io
 const int relay = 7;
 const int clk = 3;
@@ -12,7 +14,7 @@ const int dat = 2;
 
 // interup variabel
 volatile int counterRPM, displyRPM;
-uint8_t settingEnable;
+uint8_t settingEnable = true;
 // Create Object from class
 Buzer buzer = Buzer(6);
 Button stop = Button(A4);
@@ -23,6 +25,7 @@ Button reset = Button(A1);
 Setting setting = Setting(1, 60);
 CountDown myCounter = CountDown(1);
 Display display = Display();
+Delay myDelay = Delay();
 
 void incriment()
 {
@@ -39,18 +42,14 @@ void setup()
 {
   pinMode(relay, OUTPUT);
   digitalWrite(relay, LOW);
-
-  start.changeMode(FALLING);
-  stop.changeMode(FALLING);
-  reset.changeMode(FALLING);
-  down.changeMode(FALLING);
-  up.changeMode(FALLING);
-
   pinMode(clk, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(clk), incriment, FALLING);
   Timer1.initialize(1000000);
   Timer1.attachInterrupt(rpm); // rpm call every 1 seconds
-  buzer.on(300);
+  buzer.on(100);
+  myCounter.resetCount(setting.getValue(), 00);
+  start.enable();
+  stop.disable();
 }
 unsigned long rate;
 void loop()
@@ -107,6 +106,19 @@ void loop()
       }
     }
   }
+  if (myCounter.isFinish())
+  {
+    buzer.onRepeat(10, 200);
+    myDelay.setTimeout(10000);
+  }
+  if (myDelay.callBack())
+  {
+    //auto reset
+    start.enable();
+    stop.disable();
+    myCounter.resetCount(setting.getValue(), 00);
+    settingEnable = true;
+  }
 
   display.setCounter(myCounter.getMinute(), myCounter.getSecond());
 
@@ -124,4 +136,5 @@ void loop()
   myCounter.loop();
   display.loop();
   buzer.loop();
+  myDelay.loop();
 }

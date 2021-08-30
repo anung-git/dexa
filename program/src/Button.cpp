@@ -7,14 +7,7 @@ void Button::loop()
         int pinValue = digitalRead(pin);
         if (wait == LOW && pinValue == LOW)
         {
-            if (mode == CHANGE)
-            {
-                value == HIGH ? value = LOW : value = HIGH;
-            }
-            if (mode == FALLING)
-            {
-                value = LOW;
-            }
+            value = LOW;
             wait = HIGH;
             debounce = millis() + 80;
         }
@@ -42,17 +35,9 @@ void Button::enable()
 
 bool Button::getValue()
 {
-    if (mode == FALLING)
-    {
         bool ret = value;
         value = HIGH;
         return ret;
-    }
-    return this->value;
-}
-void Button::changeMode(int mode)
-{
-    this->mode = mode;
 }
 Button::Button(int pin)
 {
