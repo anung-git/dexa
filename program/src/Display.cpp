@@ -39,12 +39,25 @@ void Display::segOut(uint8_t s)
     digitalWrite(stbReg, HIGH);
 }
 
-void Display::blink(bool val)
+void Display::tick(bool val)
 {
     lamp = val;
 }
+void Display::blink(bool value)
+{
+    kedip = value;
+}
 void Display::loop()
 {
+
+    bool off = false;
+    if (kedip)
+    {
+        if (millis() % 500 > 250)
+        {
+            off = true;
+        }
+    }
 
     switch (scan)
     {
@@ -52,25 +65,25 @@ void Display::loop()
         clrPin(com4);
         segOut(buf[0]);
         segOut(0xff);
-        setPin(com1);
+        off == true ? clrPin(com1) : setPin(com1);
         break;
     case 1:
         clrPin(com1);
         segOut(buf[1]);
         segOut(0xff);
-        setPin(com2);
+        off == true ? clrPin(com2) : setPin(com2);
         break;
     case 2:
         clrPin(com2);
         lamp == true ? segOut(buf[2] & 0xfe) : segOut(buf[2]);
         segOut(0xff);
-        setPin(com3);
+        off == true ? clrPin(com3) : setPin(com3);
         break;
     case 3:
         clrPin(com3);
         lamp == true ? segOut(buf[3] & 0xfe) : segOut(buf[3]);
         segOut(0xff);
-        setPin(com4);
+        off == true ? clrPin(com4) : setPin(com4);
         break;
     case 4:
         clrPin(com4);

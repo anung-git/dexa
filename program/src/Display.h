@@ -25,6 +25,7 @@ class Display
 {
 private:
     /* data */
+    bool kedip;
     bool lamp;
     uint8_t scan;
     uint8_t buf[8];
@@ -36,8 +37,8 @@ public:
     void setRPM(int rpm);
     void setCounter(unsigned char min, unsigned char sec);
     void loop();
-    void blink(bool val);
-
+    void tick(bool val);
+    void blink(bool value);
     Display(/* args */);
     ~Display();
 };

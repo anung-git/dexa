@@ -6,7 +6,6 @@
 #include "Setting.h"
 #include "Buzer.h"
 #include "Delay.h"
-
 // konstan variabel io
 const int relay = 7;
 const int clk = 3;
@@ -17,8 +16,8 @@ volatile int counterRPM, displyRPM;
 uint8_t settingEnable = true;
 // Create Object from class
 Buzer buzer = Buzer(6);
-Button stop = Button(A4);
-Button start = Button(A5);
+Button stop = Button(A5);
+Button start = Button(A4);
 Button up = Button(A3);
 Button down = Button(A2);
 Button reset = Button(A1);
@@ -83,11 +82,11 @@ void loop()
   if (myCounter.isRun())
   {
     digitalWrite(relay, HIGH);
-    display.blink(myCounter.halfSec());
+    display.tick(myCounter.halfSec());
   }
   else
   {
-    display.blink(true);
+    display.tick(true);
     digitalWrite(relay, LOW);
 
     if (settingEnable == true)
@@ -110,10 +109,12 @@ void loop()
   {
     buzer.onRepeat(10, 200);
     myDelay.setTimeout(10000);
+    display.blink(true);
   }
   if (myDelay.callBack())
   {
     //auto reset
+    display.blink(false);
     start.enable();
     stop.disable();
     myCounter.resetCount(setting.getValue(), 00);
@@ -130,7 +131,16 @@ void loop()
     reset.loop();
     up.loop();
     down.loop();
-    // potensio.loop();
+  }
+  rate = millis();
+  while (rate == millis())
+  {
+    //object loop
+    start.loop();
+    stop.loop();
+    reset.loop();
+    up.loop();
+    down.loop();
   }
   rate = millis();
   myCounter.loop();
