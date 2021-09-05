@@ -8,11 +8,10 @@
 #include "Delay.h"
 // konstan variabel io
 const int relay = 7;
-const int clk = 3;
-const int dat = 2;
+const int encoder = 2;
 
 // interup variabel
-volatile int counterRPM, displyRPM;
+volatile int counterRPM;//, displyRPM;
 uint8_t settingEnable = true;
 // Create Object from class
 Buzer buzer = Buzer(6);
@@ -32,18 +31,22 @@ void incriment()
 }
 void rpm()
 {
-  // displyRPM = counterRPM * 60;
-  display.setRPM(counterRPM);
+  // uint8_t oldSREG = SREG;
+  // cli();
+  // display.setRPM(counterRPM *0.9375);
+  display.setRPM(counterRPM );
   counterRPM = 0;
+  // SREG = oldSREG;
 }
 
 void setup()
 {
   pinMode(relay, OUTPUT);
   digitalWrite(relay, LOW);
-  pinMode(clk, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(clk), incriment, FALLING);
-  Timer1.initialize(1000000);
+  pinMode(encoder, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(encoder), incriment, FALLING);
+  // Timer1.initialize(1000000);
+  Timer1.initialize(937500);
   Timer1.attachInterrupt(rpm); // rpm call every 1 seconds
   buzer.on(100);
   myCounter.resetCount(setting.getValue(), 00);
